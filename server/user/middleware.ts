@@ -1,4 +1,5 @@
 import type {Request, Response, NextFunction} from 'express';
+import {Types} from 'mongoose';
 import UserCollection from '../user/collection';
 
 /**
@@ -144,6 +145,39 @@ const isAuthorExists = async (req: Request, res: Response, next: NextFunction) =
   next();
 };
 
+/**
+* Checks if a user with userId in req.params exists
+*/
+const isUserExists = async (req: Request, res: Response, next: NextFunction) => {
+ const validFormat = Types.ObjectId.isValid(req.params.userId);
+ const user = validFormat ? await UserCollection.findOneByUserId(req.params.userId) : '';
+ if (!user) {
+   res.status(404).json({
+     error: {
+       userNotFound: `User with user ID ${req.params.userId} does not exist.`
+     }
+   });
+   return;
+ }
+
+ next();
+};
+
+/**
+* Checks that the user with userId in req.params is not the currently logged in user
+*/
+const isUserNotCurrentUser = async (req: Request, res: Response, next: NextFunction) => {
+ 
+ if (req.session.userId == req.params.userId) {
+  res.status(403).json({
+    error: 'The provided user is also the current user.'
+  });
+   return;
+ }
+
+ next();
+};
+
 export {
   isCurrentSessionUserExists,
   isUserLoggedIn,
@@ -152,5 +186,7 @@ export {
   isAccountExists,
   isAuthorExists,
   isValidUsername,
-  isValidPassword
+  isValidPassword,
+  isUserExists,
+  isUserNotCurrentUser
 };
