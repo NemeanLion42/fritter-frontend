@@ -35,14 +35,14 @@
 
     <div class="vote-buttons" v-if="$store.state.username !== null">
       <button @click="upvoteFreet" v-if="!upvotes.includes($store.state.username)">
-        Upvote
+        ⬆️ Upvote
       </button>
       <button @click="revokeVote" v-else>
         Revoke Upvote
       </button>
 
       <button @click="downvoteFreet" v-if="!downvotes.includes($store.state.username)">
-        Downvote
+        ⬇️ Downvote
       </button>
       <button @click="revokeVote" v-else>
         Revoke Downvote

@@ -8,6 +8,7 @@ import * as util from './util';
 import * as freetUtil from '../freet/util';
 import FollowCollection from './collection';
 import { Types } from 'mongoose';
+import UserModel from '../user/model';
 
 const router = express.Router();
 
@@ -81,7 +82,7 @@ router.post(
  *
  * @name GET /api/follow/following/:userId
  *
- * @return {Set<Types.ObjectId>} - A set of users that the user indicated by userId is following
+ * @return {string[]} - The usernames of users that the user indicated by userId is following
  * @throws {404} - If the userId is invalid
  */
  router.get(
@@ -90,8 +91,9 @@ router.post(
     userValidator.isUserExists
   ],
   async (req: Request, res: Response) => {
-    const following = await (await FollowCollection.findOneByUserId((req.params.userId as unknown as Types.ObjectId))).following;
-    res.status(200).json(following);
+    const followingIds = (await FollowCollection.findOneByUserId((req.params.userId as unknown as Types.ObjectId))).following;
+    const followingUsernames = (await UserModel.find({_id: {$in: followingIds}})).map(user => user.username);
+    res.status(200).json(followingUsernames);
   }
 );
 
@@ -100,7 +102,7 @@ router.post(
  *
  * @name GET /api/follow/followers/:userId
  *
- * @return {Set<Types.ObjectId>} - A set of users who follow user indicated by userId
+ * @return {string[]} - The usernames of users who follow user indicated by userId
  * @throws {404} - If the userId is invalid
  */
  router.get(
@@ -109,8 +111,9 @@ router.post(
     userValidator.isUserExists
   ],
   async (req: Request, res: Response) => {
-    const followers = await (await FollowCollection.findOneByUserId((req.params.userId as unknown as Types.ObjectId))).followers;
-    res.status(200).json(followers);
+    const followerIds = (await FollowCollection.findOneByUserId((req.params.userId as unknown as Types.ObjectId))).followers;
+    const followerUsernames = (await UserModel.find({_id: {$in: followerIds}})).map(user => user.username);
+    res.status(200).json(followerUsernames);
   }
 );
 

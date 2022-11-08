@@ -105,6 +105,7 @@ class FollowCollection {
    */
   static async getFollowingFeed(userId: Types.ObjectId | string): Promise<Array<HydratedDocument<Freet>>> {
     const following = (await FollowModel.findOne({userId: userId})).following;
+    // const sorted = FreetModel.find({authorId: {$in: following}}).sort({dateCreated: -1});
     return FreetModel.find({authorId: {$in: following}}).sort({dateCreated: -1}).populate('authorId');
   }
 }

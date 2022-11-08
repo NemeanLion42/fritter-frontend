@@ -12,7 +12,22 @@
     </div>
     <div class="right">
       <router-link to="/">
-        Home
+        All Freets
+      </router-link>
+      <router-link to="/new-freet" v-if="$store.state.username">
+        New Freet
+      </router-link>
+      <router-link to="/following-feed" v-if="$store.state.username">
+        Following Feed
+      </router-link>
+      <router-link to="/recommended-feed" v-if="$store.state.username">
+        Recommended Feed
+      </router-link>
+      <router-link to="/other-profile">
+        Other Profile
+      </router-link>
+      <router-link to="/my-profile" v-if="$store.state.username">
+        My Profile
       </router-link>
       <router-link
         v-if="$store.state.username"

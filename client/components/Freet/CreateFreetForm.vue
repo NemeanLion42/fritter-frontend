@@ -25,3 +25,49 @@ export default {
   }
 };
 </script>
+
+
+<style scoped>
+form {
+  padding: 2em 5em 5em;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  position: relative;
+}
+
+article > div {
+  display: flex;
+  flex-direction: column;
+}
+
+form > article p {
+  margin: 0;
+}
+
+form h3,
+form > * {
+  margin: 0.3em 0;
+}
+
+form h3 {
+  margin-top: 0;
+}
+
+textarea {
+   font-family: inherit;
+   font-size: inherit;
+}
+
+.alerts {
+    position: absolute;
+    z-index: 99;
+    bottom: 0;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    width: 90%;
+    text-align: center;
+}
+</style>

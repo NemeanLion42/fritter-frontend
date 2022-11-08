@@ -7,6 +7,7 @@ import * as util from './util';
 import FollowCollection from '../follow/collection';
 import InterestCollection from '../interest/collection';
 import VoteCollection from '../vote/collection';
+import UserModel from './model';
 
 const router = express.Router();
 
@@ -111,6 +112,7 @@ router.post(
   async (req: Request, res: Response) => {
     const user = await UserCollection.addOne(req.body.username, req.body.password);
     req.session.userId = user._id.toString();
+    FollowCollection.addOne(user._id);
     res.status(201).json({
       message: `Your account was created successfully. You have been logged in as ${user.username}`,
       user: util.constructUserResponse(user)
@@ -177,6 +179,22 @@ router.delete(
     res.status(200).json({
       message: 'Your account has been deleted successfully.'
     });
+  }
+);
+
+/**
+ * Gets the userId of a user if they exist, or null if they don't
+ *
+ * @name GET /api/users/:username
+ *
+ * @return {ObjectId} - The userId of a user if they exist, or null if they don't
+ */
+router.get(
+  '/:username',
+  [],
+  async (req: Request, res: Response) => {
+    const user = await UserModel.findOne({username: req.params.username});
+    res.status(200).json(user !== null ? user._id : null);
   }
 );
 

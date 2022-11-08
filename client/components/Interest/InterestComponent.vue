@@ -35,14 +35,14 @@
 
     <div class="interest-buttons" v-if="$store.state.username !== null">
       <button @click="interestedInFreet" v-if="!interested.includes($store.state.username)">
-        Interested
+        🙂 Interested
       </button>
       <button @click="revokeInterest" v-else>
         Revoke Interest
       </button>
 
       <button @click="notInterestedInFreet" v-if="!notInterested.includes($store.state.username)">
-        Not Interested
+        🙁 Not Interested
       </button>
       <button @click="revokeInterest" v-else>
         Revoke Disinterest

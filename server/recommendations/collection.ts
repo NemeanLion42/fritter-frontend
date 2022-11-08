@@ -22,7 +22,7 @@ class RecommendationsCollection {
     // async function compareFreets(freet1, freet2): Promise<number> {
     //   return (await RecommendationsCollection.scoreFreetForUser(freet1, userId)) - (await RecommendationsCollection.scoreFreetForUser(freet2, userId));
     // };
-    const freets = await FreetModel.find({});
+    const freets = await FreetModel.find({}).populate('authorId');
 
     const freetsToScores = new Map();
     for (const freet of freets) {
