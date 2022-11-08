@@ -2,6 +2,7 @@ import FreetModel from '../freet/model';
 import {HydratedDocument, Types} from 'mongoose';
 import type {Interest} from './model';
 import InterestModel from './model';
+import UserModel from '../user/model';
 
 
 class InterestCollection {
@@ -68,13 +69,15 @@ class InterestCollection {
    * Find the users interested and not interested in a freet
    * 
    * @param {Types.ObjectId | string} freetId - The id of the freet to find users for
-   * @returns The ids of the users interested and not interested in the freet
+   * @returns The usernames of the users interested and not interested in the freet
    */
   static async getUserInterestByFreet(freetId: Types.ObjectId | string) {
     const interests = await InterestModel.find({freetId: freetId});
-    const interestedUsers = interests.filter(interest => interest.interested).map(interest => interest.userId);
-    const notInterestedUsers = interests.filter(interest => !interest.interested).map(interest => interest.userId);
-    return {interested: interestedUsers, notInterested: notInterestedUsers};
+    const interestedUserIds = interests.filter(interest => interest.interested).map(interest => interest.userId);
+    const interestedUsernames = (await UserModel.find({_id: {$in: interestedUserIds}})).map(user => user.username);
+    const notInterestedUserIds = interests.filter(interest => !interest.interested).map(interest => interest.userId);
+    const notInterestedUsernames = (await UserModel.find({_id: {$in: notInterestedUserIds}})).map(user => user.username);
+    return {interested: interestedUsernames, notInterested: notInterestedUsernames};
   }
 
   /**

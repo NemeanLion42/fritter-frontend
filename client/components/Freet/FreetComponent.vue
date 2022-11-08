@@ -54,6 +54,11 @@
       :freetAuthor="freet.author"
     />
 
+    <InterestComponent
+      :freetId="freet._id"
+      :freetAuthor="freet.author"
+    />
+
     <p class="info">
       Posted at {{ freet.dateCreated }}<br>
       <i v-if="freet.dateModified !== freet.dateCreated">Last edited at {{ freet.dateModified }}</i>
@@ -72,10 +77,11 @@
 
 <script>
 import VoteComponent from '@/components/Vote/VoteComponent.vue';
+import InterestComponent from '@/components/Interest/InterestComponent.vue';
 
 export default {
   name: 'FreetComponent',
-  components: {VoteComponent},
+  components: {VoteComponent, InterestComponent},
   props: {
     // Data from the stored freet
     freet: {

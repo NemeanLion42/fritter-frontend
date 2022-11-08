@@ -79,11 +79,9 @@ export default {
   methods: {
     async refreshVotes() {
       const response = await fetch(`/api/vote/freet/${this.freetId}`, {method: "GET"});
-      // const response = 3;
       const votes = await response.json();
       this.upvotes = votes.upvote;
       this.downvotes = votes.downvote;
-      // console.log(this.upvotes);
     },
     async upvoteFreet() {
       const response = await fetch(`/api/vote/${this.freetId}/upvote`, {method: "PUT"});

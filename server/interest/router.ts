@@ -121,7 +121,7 @@ router.put(
 );
 
 /**
- * Get users interested/disinterested in a freet
+ * Get usernames of users interested/disinterested in a freet
  * 
  * @name GET /api/interest/freet/:freetId
  * 
