@@ -49,28 +49,10 @@
       {{ freet.content }}
     </p>
 
-    <div class="votes" v-if="upvotes !== null && downvotes !== null">
-      <p class="vote-numbers">
-        Upvotes: {{ upvotes.length }}, Downvotes: {{ downvotes.length }}
-      </p>
-      <div class="vote-buttons" v-if="$store.state.username !== null">
-        <button @click="upvoteFreet" v-if="!upvotes.includes($store.state.username)">
-          Upvote
-        </button>
-        <button @click="revokeVote" v-else>
-          Revoke Upvote
-        </button>
-
-        <button @click="downvoteFreet" v-if="!downvotes.includes($store.state.username)">
-          Downvote
-        </button>
-        <button @click="revokeVote" v-else>
-          Revoke Downvote
-        </button>
-      </div>
-    </div>
-    <p class="votes" v-else>Loading votes</p>
-
+    <VoteComponent
+      :freetId="freet._id"
+      :freetAuthor="freet.author"
+    />
 
     <p class="info">
       Posted at {{ freet.dateCreated }}<br>
@@ -89,8 +71,11 @@
 </template>
 
 <script>
+import VoteComponent from '@/components/Vote/VoteComponent.vue';
+
 export default {
   name: 'FreetComponent',
+  components: {VoteComponent},
   props: {
     // Data from the stored freet
     freet: {
@@ -102,35 +87,10 @@ export default {
     return {
       editing: false, // Whether or not this freet is in edit mode
       draft: this.freet.content, // Potentially-new content for this freet
-      alerts: {}, // Displays success/error messages encountered during freet modification
-      upvotes: null,
-      downvotes: null
+      alerts: {} // Displays success/error messages encountered during freet modification
     };
   },
-  async mounted () {
-    await this.refreshVotes();
-  },
   methods: {
-    async refreshVotes() {
-      const response = await fetch(`/api/vote/freet/${this.freet._id}`, {method: "GET"});
-      // const response = 3;
-      const votes = await response.json();
-      this.upvotes = votes.upvote;
-      this.downvotes = votes.downvote;
-      // console.log(this.upvotes);
-    },
-    async upvoteFreet() {
-      const response = await fetch(`/api/vote/${this.freet._id}/upvote`, {method: "PUT"});
-      await this.refreshVotes();
-    },
-    async downvoteFreet() {
-      const response = await fetch(`/api/vote/${this.freet._id}/downvote`, {method: "PUT"});
-      await this.refreshVotes();
-    },
-    async revokeVote() {
-      const response = await fetch(`/api/vote/${this.freet._id}`, {method: "DELETE"});
-      await this.refreshVotes();
-    },
     startEditing() {
       /**
        * Enables edit mode on this freet.
