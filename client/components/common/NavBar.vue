@@ -11,33 +11,57 @@
       </h1>
     </div>
     <div class="right">
-      <router-link to="/">
+      <router-link
+        to="/"
+        :class="{current: $route.name === 'Home'}"
+      >
         All Freets
       </router-link>
-      <router-link to="/new-freet" v-if="$store.state.username">
+      <router-link
+        to="/new-freet"
+        v-if="$store.state.username"
+        :class="{current: $route.name === 'New Freet'}"
+      >
         New Freet
       </router-link>
-      <router-link to="/following-feed" v-if="$store.state.username">
+      <router-link
+        to="/following-feed"
+        v-if="$store.state.username"
+        :class="{current: $route.name === 'Following Feed'}"
+      >
         Following Feed
       </router-link>
-      <router-link to="/recommended-feed" v-if="$store.state.username">
+      <router-link
+        to="/recommended-feed"
+        v-if="$store.state.username"
+        :class="{current: $route.name === 'Recommended Feed'}"
+      >
         Recommended Feed
       </router-link>
-      <router-link to="/other-profile">
+      <router-link
+        to="/other-profile"
+        :class="{current: $route.name === 'Other Profile'}"
+      >
         Other Profile
       </router-link>
-      <router-link to="/my-profile" v-if="$store.state.username">
+      <router-link
+        to="/my-profile"
+        v-if="$store.state.username"
+        :class="{current: $route.name === 'My Profile'}"
+      >
         My Profile
       </router-link>
       <router-link
         v-if="$store.state.username"
         to="/account"
+        :class="{current: $route.name === 'Account'}"
       >
         Account
       </router-link>
       <router-link
         v-else
         to="/login"
+        :class="{current: $route.name === 'Login'}"
       >
         Login
       </router-link>
@@ -56,7 +80,7 @@
 
 <style scoped>
 nav {
-    padding: 1vw 2vw;
+    padding: .5vw 2vw;
     background-color: #ccc;
     display: flex;
     justify-content: space-between;
@@ -92,5 +116,18 @@ img {
 
 .alerts {
     width: 25%;
+}
+
+a {
+  padding: .7em;
+  border-radius: 10px;
+  background-color: #9bf;
+  color: #000;
+  text-decoration: none;
+}
+
+.current{
+  background-color: #48f;
+  
 }
 </style>
